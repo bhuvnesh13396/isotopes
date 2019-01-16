@@ -5,9 +5,41 @@ const jwt = require('jsonwebtoken');
 //const {Schema} = mongoose;
 
 const UsersSchema = new mongoose.Schema({
-	email : String,
-	hash : String,
-	salt : String,
+	email : {
+		type : String,
+		required : true,
+		unique : true
+	},
+
+	name : {
+		first : { type : String, required : true, trim:true },
+		last : { type : String, required : true , trim : true}
+	},
+
+	hash : {
+		type : String
+	},
+
+	salt : {
+		type : String
+	},
+
+	interests : [
+		{
+			name : {
+				type : String,
+				unique : true,
+				trim : true,
+	
+			},
+
+			reputation : {
+				type : Number,
+				Badge : String,
+			}
+		}
+		
+	]
 });
 
 UsersSchema.methods.setPassword = function(password){
@@ -39,6 +71,7 @@ UsersSchema.methods.toAuthJSON = function(){
 		_id : this._id,
 		email : this.email,
 		token : this.generateJWT(),
+		interests : this.interests
 	};
 };
 

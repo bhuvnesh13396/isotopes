@@ -88,4 +88,30 @@ router.get('/current', auth.required, (req,res,next) => {
     });
 });
 
+
+router.post('/current/addInterests', auth.required, (req,res,next) => {
+
+  
+  const { payload : { id } , body : { interests }  } = req;
+
+ // const { payload } = req;
+console.log(interests);
+ // console.log("Interest "+ payload);
+
+  return Users.findById(id)
+    .then((user) => {
+      if(!user){
+        return res.sendStatus(400);
+      }
+
+      const finalUser = new Users(user);
+      finalUser.interests.push({interests});
+
+      return finalUser.save()
+        .then(() => res.json({ user : finalUser.toAuthJSON() }));
+    });
+
+
+});
+
 module.exports = router;
