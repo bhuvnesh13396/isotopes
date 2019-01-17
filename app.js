@@ -1,4 +1,3 @@
-
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -15,8 +14,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 //Initiate our app
 const app = express();
-
-
 
 //Configure our app
 app.use(cors());

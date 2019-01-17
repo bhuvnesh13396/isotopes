@@ -73,9 +73,9 @@ router.post('/login', auth.optional , (req,res,next) => {
 
 });
 
+
 router.get('/current', auth.required, (req,res,next) => {
 
-  console.log("Payload *************************************************** ", req);
   const { payload : { id } } = req;
 
   return Users.findById(id)
@@ -88,15 +88,10 @@ router.get('/current', auth.required, (req,res,next) => {
     });
 });
 
-
+// API to add interests of a user
 router.post('/current/addInterests', auth.required, (req,res,next) => {
-
   
   const { payload : { id } , body : { interests }  } = req;
-
- // const { payload } = req;
-console.log(interests);
- // console.log("Interest "+ payload);
 
   return Users.findById(id)
     .then((user) => {
@@ -105,12 +100,19 @@ console.log(interests);
       }
 
       const finalUser = new Users(user);
-      finalUser.interests.push({interests});
+      // Add the interests from request to User object
+      interests.map(interest => {
+        
+        finalUser.interests.push({
+          name : interest.name,
+          reputation : interest.reputation
+        });
+      });
+
 
       return finalUser.save()
         .then(() => res.json({ user : finalUser.toAuthJSON() }));
     });
-
 
 });
 
