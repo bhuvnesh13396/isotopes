@@ -52,6 +52,10 @@ UsersSchema.methods.validatePassword = function(password){
 	return this.hash===hash;
 }
 
+UsersSchema.methods.getUserInterest = function(){
+	return this.interests;
+}
+
 
 UsersSchema.methods.generateJWT = function(){
 	const today = new Date();

@@ -88,6 +88,26 @@ router.get('/current', auth.required, (req,res,next) => {
     });
 });
 
+
+// API to fetch current user's interests
+router.get('/current/getInterests' , auth.required , (req,res,next)=> {
+
+  const { payload : {id} } = req;
+
+  return Users.findById(id)
+    .then((user) => {
+      if(!user){
+        return res.sendStatus(400);
+      }
+
+      const currentUser = new Users(user);
+      const currentUserInterest = currentUser.getUserInterest();
+      
+      return (currentUserInterest != null ? res.json(currentUserInterest) : res.sendStatus(404));
+     
+    });
+});
+
 // API to add interests of a user
 router.post('/current/addInterests', auth.required, (req,res,next) => {
   
@@ -102,7 +122,7 @@ router.post('/current/addInterests', auth.required, (req,res,next) => {
       const finalUser = new Users(user);
       // Add the interests from request to User object
       interests.map(interest => {
-        
+
         finalUser.interests.push({
           name : interest.name,
           reputation : interest.reputation
