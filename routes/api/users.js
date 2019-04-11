@@ -102,7 +102,7 @@ router.get('/current/getInterests' , auth.required , (req,res,next)=> {
 
       const currentUser = new Users(user);
       const currentUserInterest = currentUser.getUserInterest();
-      
+
       return (currentUserInterest != null ? res.json(currentUserInterest) : res.sendStatus(404));
      
     });
@@ -129,6 +129,16 @@ router.post('/current/addInterests', auth.required, (req,res,next) => {
         });
       });
 
+      /* 
+      const currentUserInterest = finalUser.getUserInterest();
+      const removeDuplicateInterest = interests.filter(function(interest) {
+        const key = interest.name;
+        return !this.has(key) && this.add(key);
+      }, new Set);
+
+      console.log(removeDuplicateInterest);
+
+      */
 
       return finalUser.save()
         .then(() => res.json({ user : finalUser.toAuthJSON() }));
