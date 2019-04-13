@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 require('./models/Users');
+require('./models/Articles')
 require('./config/passport');
 app.use(require('./routes'));
 

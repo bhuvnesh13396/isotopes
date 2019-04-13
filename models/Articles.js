@@ -11,7 +11,7 @@ const ArticleSchema = new mongoose.Schema({
             type : String
         }
     },
-
+    
     tags : [{
         name : {
             type : String
@@ -42,7 +42,7 @@ const ArticleSchema = new mongoose.Schema({
         },
 
         likedBy : [{
-            type : db.Schema.Types.ObjectId, ref : 'Users'
+            type : mongoose.Schema.Types.ObjectId, ref : 'Users'
         }]
     },
 
@@ -54,7 +54,7 @@ const ArticleSchema = new mongoose.Schema({
       
       commentBy : {
           userId : {
-              type : db.Schema.Types.ObjectId, ref : 'Users'
+              type : mongoose.Schema.Types.ObjectId, ref : 'Users'
           }
       }
       

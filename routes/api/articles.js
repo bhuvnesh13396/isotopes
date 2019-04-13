@@ -4,7 +4,7 @@ const router = require('express').Router();
 const auth = require('../auth');
 const Articles = mongoose.model('Articles');
 
-router.post('/createArticle', auth.required, (req,res,next) => {
+router.post('/createArticle', (req,res,next) => {
 
     const { body : { article }} = req;
 
@@ -29,3 +29,36 @@ router.post('/createArticle', auth.required, (req,res,next) => {
     return finalArticle.save()
         .then((article) => res.json({ article }));
 });
+
+
+// GET API to fetch all the articles under given tag
+router.get('/getArticles', (req,res,next) => {
+    
+    const { body : { tagName } } = req;
+
+    console.log(`TagName ${tagName}`);
+    
+    // Query to fetch articles from Articles schema
+    Articles.find({'tags.name' : tagName}, 'author content title likes comment')
+        .then((articles) => {
+            console.log(`Articles ${articles}`);
+            // If no articles found
+            if(articles == null){
+                return res.status(404).json({
+                    errors : {
+                        content : `No articles found in given tag ${tagName}`
+                    }
+                });
+            }
+
+            // If articles found
+            return res.status(200).json({ article });
+        })
+
+        .catch( err => {
+            console.log(`Error occured while quering articles schema ${err}`);
+        });
+
+});
+
+module.exports = router;
